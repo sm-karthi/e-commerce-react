@@ -1,13 +1,13 @@
 import React from 'react'
 
-function Navbar() {
+function Navbar({ toggleSidebar }) {
     return (
-        <header className="border-b border-gray-300 px-6 py-4 tracking-wide relative z-50 shadow-md">
+        <header className="border-b border-gray-300 px-6 py-4 tracking-wide relative z-40 shadow-md">
             <div className="flex items-center justify-between">
 
                 {/* Left Side - Menu Button */}
                 <div className="flex items-center space-x-4">
-                    <button id="toggleOpen" className="md:hidden cursor-pointer">
+                    <button onClick={toggleSidebar} className="md:hidden cursor-pointer">
                         <svg className="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path>
                         </svg>
@@ -46,7 +46,7 @@ function Navbar() {
                     </span>
 
                     {/* Bell */}
-                    <svg xmlns="http://www.w3.org/2000/svg" 
+                    <svg xmlns="http://www.w3.org/2000/svg"
                         className="cursor-pointer fill-[#000] hover:fill-blue-700 inline-block w-10"
                         viewBox="0 0 512 512"><path d="M256 73.825a182.175 182.175 0 1 0 182.18 182.18A182.177 182.177 0 0 0 256 73.825zm0 71.833a55.05 55.05 0 1 1-55.054 55.046A55.046 55.046 0 0 1 256 145.658zm.52 208.723h-80.852c0-54.255 29.522-73.573 48.885-90.906a65.68 65.68 0 0 0 62.885 0c19.363 17.333 48.885 36.651 48.885 90.906z" data-name="Profile" /></svg>
                 </div>

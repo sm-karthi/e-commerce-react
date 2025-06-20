@@ -1,29 +1,26 @@
+import axios from 'axios';
 import { useFormik } from 'formik';
-import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function ProductCreate() {
-  const [rows, setRows] = useState([{ key: "", value: "", quantity: "" }]);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleAddBtn = () => {
-    setRows([...rows, { key: "", value: "", quantity: "" }]);
-  };
+  let navigate = useNavigate();
 
-  const handleCloseBtn = (index) => {
-    const updatedRows = [...rows];
-    updatedRows.splice(index, 1);
-    setRows(updatedRows);
-  };
-
-  const formik = useFormik({
+  let formik = useFormik({
     initialValues: {
       title: "",
       imageUrl: "",
       description: "",
-      details: rows
+      details: [
+        {
+          key: "",
+          value: "",
+          quantity: ""
+        }
+      ]
     },
     validate: (values) => {
-      const errors = {};
+      let errors = {};
 
       if (!values.title) {
         errors.title = "Please enter a title";
@@ -41,98 +38,134 @@ function ProductCreate() {
         errors.description = "Description should be at least 10 characters";
       }
 
-      const detailsErrors = values.details.map((item) => {
-        const err = {};
-        if (!item.key) err.key = "Key required";
-        if (!item.value) err.value = "Value required";
-        if (!item.quantity) err.quantity = "Quantity required";
+      let detailsErrors = values.details.map((item) => {
+        let err = {};
+        if (!item.key) {
+          err.key = "Key required";
+        }
+        if (!item.value) {
+          err.value = "Value required";
+        }
+        if (!item.quantity) {
+          err.quantity = "Quantity required";
+        }
         return err;
       });
 
-      errors.details = detailsErrors;
+
+      if (detailsErrors.some(err => Object.keys(err).length > 0)) {
+        errors.details = detailsErrors;
+      }
+
       return errors;
+
     },
-    onSubmit: (values) => {
-      alert("Form submitted");
-      console.log(values);
+    onSubmit: async (values) => {
+
+      try {
+
+        await axios.post("https://6850f0628612b47a2c07fce0.mockapi.io/products", values)
+        navigate("/admin/products")
+        console.log(values);
+
+      } catch (error) {
+        alert("Something went wrong")
+      }
     }
   });
 
-  useEffect(() => {
-    formik.setFieldValue("details", rows);
-  }, [rows]);
+  let rows = formik.values.details;
 
-  const handleDetailChange = (index, field, value) => {
-    const updated = [...rows];
+  let handleAddBtn = () => {
+    formik.setFieldValue("details", [...rows, { key: "", value: "", quantity: "" }]);
+  };
+
+  let handleCloseBtn = (index) => {
+    let updatedRows = [...rows];
+    updatedRows.splice(index, 1);
+    formik.setFieldValue("details", updatedRows);
+  };
+
+  let handleDetailChange = (index, field, value) => {
+    let updated = [...rows];
     updated[index][field] = value;
-    setRows(updated);
+    formik.setFieldValue("details", updated);
   };
 
   return (
     <div className='p-6 py-10'>
-      <div className="flex flex-col space-y-4 items-center mx-auto p-6 rounded-lg shadow-md bg-white md:w-fit">
+      
+
+      <div className="flex flex-col space-y-4 items-center mx-auto p-6 rounded-lg shadow-md bg-white lg:w-fit">
+
         <h1 className='font-bold text-2xl text-gray-600'>Create Product</h1>
 
-        <form
-          className='space-y-4'
-          onSubmit={(e) => {
-            e.preventDefault();
-            setIsSubmitted(true);
-            formik.handleSubmit();
-          }}
-        >
+        <form className='space-y-4 w-full' onSubmit={formik.handleSubmit}>
 
-          
+
           <div className='flex flex-col'>
+
             <label className='font-semibold text-lg text-gray-700'>Title:</label>
+
             <input
               type="text"
               name='title'
               value={formik.values.title}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className='md:w-lg mt-1 border px-3 py-2 rounded focus:outline-none focus:border-blue-500'
-            />
-            {isSubmitted && formik.errors.title ? (
-              <span className='text-red-500'>{formik.errors.title}</span>
-            ) : null}
+              className='lg:w-lg mt-1 border px-3 py-2 rounded focus:outline-none focus:border-2 focus:border-blue-500' />
+            {
+              formik.touched.title && formik.errors.title ? (
+                <span className='text-red-500'>{formik.errors.title}</span>
+              ) : null
+            }
+
           </div>
 
-          
+
           <div className='flex flex-col'>
+
             <label className='font-semibold text-lg text-gray-700'>Image URL:</label>
+
             <input
               type="text"
               name='imageUrl'
               value={formik.values.imageUrl}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className='md:w-lg mt-1 border px-3 py-2 rounded focus:outline-none focus:border-blue-500'
-            />
-            {isSubmitted && formik.errors.imageUrl ? (
-              <span className='text-red-500'>{formik.errors.imageUrl}</span>
-            ) : null}
+              className='lg:w-lg mt-1 border px-3 py-2 rounded focus:outline-none focus:border-2 focus:border-blue-500' />
+            {
+              formik.touched.imageUrl && formik.errors.imageUrl ? (
+                <span className='text-red-500'>{formik.errors.imageUrl}</span>
+              ) : null
+            }
+
           </div>
 
-          
+
           <div className="flex flex-col">
+
             <label className='font-semibold text-lg text-gray-700'>Description:</label>
+
             <textarea
               name='description'
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className='md:w-lg mt-1 border px-3 py-2 rounded h-22 focus:outline-none focus:border-blue-500'
-            ></textarea>
-            {isSubmitted && formik.errors.description ? (
-              <span className='text-red-500'>{formik.errors.description}</span>
-            ) : null}
+              className='lg:w-lg mt-1 border px-3 py-2 rounded h-22 focus:outline-none focus:border-2 focus:border-blue-500'
+            />
+            {
+              formik.touched.description && formik.errors.description ? (
+                <span className='text-red-500'>{formik.errors.description}</span>
+              ) : null
+            }
+
           </div>
 
-          
+
           <svg
             onClick={handleAddBtn}
-            className="cursor-pointer w-[50px] h-[50px] fill-blue-500 hover:fill-blue-700 drop-shadow-lg transition duration-200"
+            className="cursor-pointer w-[35px] h-[35px] fill-blue-500 hover:fill-blue-700"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 256 256"
           >
@@ -141,74 +174,119 @@ function ProductCreate() {
             </g>
           </svg>
 
-         
+
           {rows.map((row, index) => (
-            <div key={index} className='flex relative flex-col md:flex-row space-y-3 md:space-y-0 justify-between'>
+
+            <div className='flex relative flex-col flex-wrap md:flex-row space-y-3 md:space-y-0 justify-between'>
+
               <div className='flex flex-col'>
+
                 <label className='font-semibold text-lg text-gray-700'>Key:</label>
+
                 <input
                   type="text"
-                  name='key'
+                  name={`details[${index}].key`}
                   value={row.key}
                   onChange={(e) => handleDetailChange(index, 'key', e.target.value)}
-                  className='md:w-40 mt-1 border px-3 py-2 rounded focus:outline-none focus:border-blue-500'
+                  onBlur={formik.handleBlur}
+                  className='lg:w-40 mt-1 border px-3 py-2 rounded focus:outline-none focus:border-2 focus:border-blue-500'
                 />
-                {isSubmitted && formik.errors.details?.[index]?.key ? (
-                  <span className='text-red-500'>{formik.errors.details[index].key}</span>
-                ) : null}
+                {
+                  formik.touched.details &&
+                    formik.touched.details[index] &&
+                    formik.touched.details[index].key &&
+                    formik.errors.details &&
+                    formik.errors.details[index] &&
+                    formik.errors.details[index].key ? (
+                    <span className="text-red-500">{formik.errors.details[index].key}</span>
+                  ) : null
+                }
+
               </div>
 
+
               <div className='flex flex-col'>
+
                 <label className='font-semibold text-lg text-gray-700'>Value:</label>
+
                 <input
                   type="text"
-                  name='value'
+                  name={`details[${index}].value`}
                   value={row.value}
                   onChange={(e) => handleDetailChange(index, 'value', e.target.value)}
-                  className='md:w-40 mt-1 border px-3 py-2 rounded focus:outline-none focus:border-blue-500'
+                  onBlur={formik.handleBlur}
+                  className='lg:w-40 mt-1 border px-3 py-2 rounded focus:outline-none focus:border-2 focus:border-blue-500'
                 />
-                {isSubmitted && formik.errors.details?.[index]?.value ? (
-                  <span className='text-red-500'>{formik.errors.details[index].value}</span>
-                ) : null}
+                {
+                  formik.touched.details &&
+                    formik.touched.details[index] &&
+                    formik.touched.details[index].value &&
+                    formik.errors.details &&
+                    formik.errors.details[index] &&
+                    formik.errors.details[index].value ? (
+                    <span className="text-red-500">{formik.errors.details[index].value}</span>
+                  ) : null
+                }
+
               </div>
 
+
               <div className='flex flex-col'>
+
                 <label className='font-semibold text-lg text-gray-700'>Quantity:</label>
+
                 <input
                   type="text"
-                  name='quantity'
+                  name={`details[${index}].quantity`}
                   value={row.quantity}
                   onChange={(e) => handleDetailChange(index, 'quantity', e.target.value)}
-                  className='md:w-40 mt-1 border px-3 py-2 rounded focus:outline-none focus:border-blue-500'
+                  onBlur={formik.handleBlur}
+                  className='lg:w-40 mt-1 border px-3 py-2 rounded focus:outline-none focus:border-2 focus:border-blue-500'
                 />
-                {isSubmitted && formik.errors.details?.[index]?.quantity ? (
-                  <span className='text-red-500'>{formik.errors.details[index].quantity}</span>
-                ) : null}
+                {
+                  formik.touched.details &&
+                    formik.touched.details[index] &&
+                    formik.touched.details[index].quantity &&
+                    formik.errors.details &&
+                    formik.errors.details[index] &&
+                    formik.errors.details[index].quantity ? (
+                    <span className="text-red-500">{formik.errors.details[index].quantity}</span>
+                  ) : null
+                }
+
               </div>
+
 
               {rows.length > 1 && (
                 <button
                   type='button'
                   onClick={() => handleCloseBtn(index)}
-                  className='absolute top-1 right-0 bg-red-500 rounded-full w-6 h-6 text-white hover:bg-red-700 font-bold cursor-pointer shadow-md'
+                  className='absolute top-1 right-0 bg-red-500 text-sm rounded-full w-5 h-5 text-white hover:bg-red-700 font-bold cursor-pointer shadow-md'
                 >
                   X
                 </button>
               )}
+
             </div>
+
           ))}
 
-          
+
           <button
             type='submit'
             className='bg-blue-500 text-white px-3 py-1 rounded font-semibold hover:bg-blue-700 transition duration-150 shadow-md cursor-pointer'
           >
             Submit
           </button>
+
         </form>
+
       </div>
+
     </div>
+
   );
+
 }
 
 export default ProductCreate;

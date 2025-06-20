@@ -18,15 +18,30 @@ function Products() {
 
     useEffect(() => {
         getData();
-    }, [])
+    }, []);
+
+
+    let deleteProduct = async (id) => {
+
+        try {
+
+            if (confirm("Are you sure? Delete this product?")) {
+                await axios.delete(`https://6850f0628612b47a2c07fce0.mockapi.io/products/${id}`)
+                getData();
+            }
+
+        } catch (error) {
+            alert("Something went wrong")
+        }
+    }
 
     return (
         <div className="p-6">
 
-            <div className='flex justify-end mt-4 mr-4 sm:mr-24'>
+            <div className='flex justify-end mr-4 mt-4 md:mr-16'>
                 <Link
                     to={"/admin/create-product"}
-                    className='bg-blue-500 text-white px-3 py-1 rounded font-semibold hover:bg-blue-700 transition duration-150 shadow-md'>
+                    className='bg-blue-500 text-white px-3 py-1 rounded font-semibold hover:bg-blue-700 transition duration-150 shadow-md text-sm'>
                     Create product
                 </Link>
             </div>
@@ -39,7 +54,7 @@ function Products() {
                             <th className="tableBox ">Title</th>
                             <th className="tableBox ">Description</th>
                             <th className="tableBox ">Image</th>
-                            <th className="tableBox ">Size / Price</th>
+                            <th className="tableBox ">Size / Price / Quantity</th>
                             <th className="tableBox ">Action</th>
                         </tr>
                     </thead>
@@ -53,23 +68,36 @@ function Products() {
                                     <td className="tableBox w-40">
                                         <img src={item.imageUrl} alt={item.title} draggable="false" />
                                     </td>
-                                    <td className="tableBox"></td>
+                                    <td className="tableBox">
+                                        <div className="flex items-center justify-center gap-2 flex-wrap md:w-40 w-30">
+                                            {item.details.map((obj, index) => (
+                                                <span
+
+                                                    className="bg-green-100 text-green-800 font-medium rounded-full px-3 py-1 text-sm shadow-sm border border-green-300"
+                                                >
+                                                    {`${obj.key} / ₹${obj.value} / ${obj.quantity}`}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </td>
+
                                     <td className="tableBox">
                                         <div className="flex flex-wrap gap-2 items-center justify-center">
                                             <Link
                                                 to={`/admin/product/${item.id}`}
-                                                className="bg-blue-500 text-white px-3 py-1 rounded font-semibold hover:bg-blue-700 transition duration-150 shadow-md">
+                                                className="bg-blue-500 text-white px-3 py-1 rounded font-semibold hover:bg-blue-700 transition duration-150 shadow-md text-sm">
                                                 View
                                             </Link>
 
                                             <Link
                                                 to={`/admin/edit/${item.id}`}
-                                                className="bg-green-500 text-white px-3 py-1 rounded font-semibold hover:bg-green-600 transition duration-150 shadow-md">
+                                                className="bg-green-500 text-white px-3 py-1 rounded font-semibold hover:bg-green-600 transition duration-150 shadow-md text-sm">
                                                 Edit
                                             </Link>
 
                                             <button
-                                                className="bg-red-500 text-white px-3 py-1 rounded font-semibold hover:bg-red-700 transition duration-150 shadow-md cursor-pointer">
+                                                onClick={() => deleteProduct(item.id)}
+                                                className="bg-red-500 text-white px-3 py-1 rounded font-semibold hover:bg-red-700 transition duration-150 shadow-md text-sm cursor-pointer">
                                                 Delete
                                             </button>
                                         </div>
