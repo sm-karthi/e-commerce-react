@@ -63,7 +63,7 @@ function Products() {
                         {
                             product.map((item) => (
                                 <tr>
-                                    <td className="tableBox">{item.title}</td>
+                                    <td className="tableBox w-30">{item.title}</td>
                                     <td className="tableBox w-60">{item.description}</td>
                                     <td className="tableBox w-40">
                                         <img src={item.imageUrl} alt={item.title} draggable="false" />
