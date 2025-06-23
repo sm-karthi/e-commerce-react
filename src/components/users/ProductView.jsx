@@ -60,7 +60,7 @@ function ProductView() {
                 </div>
 
                 <div className="flex justify-center">
-                    <button className='bg-blue-500 text-white font-semibold px-8 py-1 rounded shadow-md hover:bg-blue-700 transition duration-150 cursor-pointer mt-5 w-full md:w-fit'>Add to Cart</button>
+                    <button className='bg-blue-500 text-white font-semibold px-8 py-2 rounded shadow-md hover:bg-blue-700 transition duration-150 cursor-pointer mt-5 w-full md:w-fit'>Add to Cart</button>
                 </div>
             </div>
         </div>
