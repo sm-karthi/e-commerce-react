@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import logo from '../../../src/assets/images/logo.png'
 
 function Sidebar({ isSidebarOpen, toggleSidebar }) {
   const location = useLocation();
@@ -11,7 +12,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
     >
       <div className="h-full p-4 flex flex-col items-center">
         <img
-          src="../../../src/assets/images/logo.png"
+          src={logo}
           alt="logo"
           draggable="false"
           className="w-20 rounded-full"
