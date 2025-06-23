@@ -1,18 +1,29 @@
 import React from 'react'
+import logo from '../../../src/assets/images/logo.png'
 
-function Navbar({ toggleSidebar }) {
+function Navbar({ toggleSidebar, isUser }) {
     return (
-        <header className="border-b border-gray-300 px-6 py-4 tracking-wide relative z-40 shadow-md">
+        <header className="border-b border-gray-300 px-3 md:px-6 py-2 md:py-4 tracking-wide relative z-40 shadow-md bg-white">
             <div className="flex items-center justify-between">
 
                 {/* Left Side - Menu Button */}
-                <div className="flex items-center space-x-4">
-                    <button onClick={toggleSidebar} className="md:hidden cursor-pointer">
-                        <svg className="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path>
-                        </svg>
-                    </button>
-                </div>
+                {
+                    !isUser ?
+                        (<div className="flex items-center space-x-4">
+                            <button onClick={toggleSidebar} className="md:hidden cursor-pointer">
+                                <svg className="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </div>) : null
+                }
+
+
+                {
+                    isUser ?
+                        (<img src={logo} alt="Logo" className='max-w-12  ' draggable='false' />) : null
+                }
+
 
                 {/* Center - Search Bar */}
                 <div className="flex-grow max-w-md mx-4">

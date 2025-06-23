@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-function Dashboard() {
+function Dashboard({ isUser }) {
     let [product, setProduct] = useState([]);
 
     let getData = async () => {

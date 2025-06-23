@@ -22,6 +22,7 @@ function ProductView() {
 
   return (
     <div className='p-6 flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-12 justify-center mt-10'>
+
       <div className='border border-gray-200 rounded-md shadow-xl p-3 bg-white md:w-88 w-full'>
         <img src={product.imageUrl} alt={product.title} draggable="false" className='rounded-md' />
       </div>

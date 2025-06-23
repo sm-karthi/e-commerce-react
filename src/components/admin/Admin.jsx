@@ -5,13 +5,14 @@ import Sidebar from './Sidebar';
 
 function Admin() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  let [user, setUser] = useState(false);
 
   function toggleSidebar() {
     setIsSidebarOpen(!isSidebarOpen);
   }
 
   return (
-    <div className="h-screen w-screen flex overflow-hidden relative">
+    <div className="h-screen flex overflow-hidden relative">
       
       {isSidebarOpen ? (
         <div
@@ -20,7 +21,7 @@ function Admin() {
       ) : null}
 
       
-      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} isUser={user} />
 
       
       {isSidebarOpen && (
