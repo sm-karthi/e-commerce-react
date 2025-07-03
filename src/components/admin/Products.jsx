@@ -1,23 +1,30 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom"
+import { setProducts, deleteProducts } from "../../reducers/Product-reducer";
 
 function Products() {
 
-    let [product, setProduct] = useState([]);
+    const dispatch = useDispatch()
+
+    const data = useSelector((state) => state.app)
 
     let getData = async () => {
 
         try {
             let response = await axios.get("https://6850f0628612b47a2c07fce0.mockapi.io/products")
-            setProduct(response.data);
+            dispatch(setProducts(response.data))
         } catch (error) {
             alert("Something went wrong");
         }
     }
 
     useEffect(() => {
-        getData();
+        if (data.products.length === 0) {
+            getData();
+        }
+
     }, []);
 
 
@@ -27,7 +34,7 @@ function Products() {
 
             if (confirm("Are you sure? Delete this product?")) {
                 await axios.delete(`https://6850f0628612b47a2c07fce0.mockapi.io/products/${id}`)
-                getData();
+                dispatch(deleteProducts({id}))
             }
 
         } catch (error) {
@@ -61,7 +68,7 @@ function Products() {
 
                     <tbody>
                         {
-                            product.map((item) => (
+                            data.products.map((item) => (
                                 <tr>
                                     <td className="tableBox w-30">{item.title}</td>
                                     <td className="tableBox w-60">{item.description}</td>

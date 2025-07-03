@@ -2,11 +2,15 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { editProduct } from '../../reducers/Product-reducer';
 
 function ProductEdit() {
 
   let { id } = useParams()
   let navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
 
   let getData = async () => {
@@ -84,6 +88,7 @@ function ProductEdit() {
       try {
 
         await axios.put(`https://6850f0628612b47a2c07fce0.mockapi.io/products/${id}`, values)
+        dispatch(editProduct({ id, values }))
         navigate("/admin/products")
         console.log(values);
 

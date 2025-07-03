@@ -1,20 +1,25 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setProducts } from '../../reducers/Product-reducer';
 
 function Dashboard() {
-    let [product, setProduct] = useState([]);
+    const dispatch = useDispatch();
+    const data = useSelector(state => state.app);
 
     let getData = async () => {
         try {
             let response = await axios.get("https://6850f0628612b47a2c07fce0.mockapi.io/products");
-            setProduct(response.data);
+            dispatch(setProducts(response.data));
         } catch (error) {
             alert("Something went wrong");
         }
     };
 
     useEffect(() => {
-        getData();
+        if(data.products.length === 0){
+            getData();
+        }
     }, []);
 
     return (
@@ -42,7 +47,7 @@ function Dashboard() {
                 <div className="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
                     <div className="flex justify-between mb-6">
                         <div>
-                            <div className="text-2xl font-semibold mb-1">{product.length}</div>
+                            <div className="text-2xl font-semibold mb-1">{data.products.length}</div>
                             <div className="text-sm font-medium text-gray-400">Products</div>
                         </div>
                         <div className="dropdown">

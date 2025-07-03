@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css'
 import Dashboard from './components/admin/Dashboard';
@@ -19,6 +18,7 @@ function App() {
     <BrowserRouter>
 
       <Routes>
+        
 
         <Route path='/' element={<User />}>
 
@@ -26,6 +26,7 @@ function App() {
           <Route path='product/:id' element={<UserProductView />} />
 
         </Route>
+        
 
         <Route path='/admin' element={<Admin />}>
 
@@ -36,6 +37,7 @@ function App() {
           <Route path='create-product' element={<ProductCreate />} />
 
         </Route>
+
       </Routes>
 
     </BrowserRouter>

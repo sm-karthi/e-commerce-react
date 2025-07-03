@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../../reducers/Product-reducer';
 
 function ProductCreate() {
 
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   let formik = useFormik({
     initialValues: {
@@ -65,6 +68,7 @@ function ProductCreate() {
       try {
 
         await axios.post("https://6850f0628612b47a2c07fce0.mockapi.io/products", values)
+        dispatch(addProduct(values))
         navigate("/admin/products")
         console.log(values);
 

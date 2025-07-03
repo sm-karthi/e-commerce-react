@@ -1,21 +1,28 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setProducts } from '../../reducers/Product-reducer';
 
 function Dashboard() {
-    let [product, setProduct] = useState([]);
+    const dispatch = useDispatch()
+
+    const data = useSelector((state) => state.app)
 
     let getData = async () => {
         try {
             let response = await axios.get("https://6850f0628612b47a2c07fce0.mockapi.io/products");
-            setProduct(response.data);
+            dispatch(setProducts(response.data))
         } catch (error) {
             alert("Something went wrong");
         }
     };
 
     useEffect(() => {
-        getData();
+        if (data.products.length === 0) {
+            getData();
+        }
+
     }, []);
 
     return (
@@ -23,7 +30,7 @@ function Dashboard() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mt-10">
 
-                {product.map((item) => (
+                {data.products.map((item) => (
                     <Link to={`/product/${item.id}`}>
 
                         <div className="bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-xl transition-shadow duration-300 p-3 cursor-pointer">
