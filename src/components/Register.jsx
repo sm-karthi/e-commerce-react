@@ -124,7 +124,7 @@ function Register() {
                         Register
                     </button>
 
-                    <Link to={"/login"} className='mt-2 text-blue-700'>Already have an account? Login</Link>
+                    <Link to={"/"} className='mt-2 text-blue-700'>Already have an account? Login</Link>
 
                 </form>
 
