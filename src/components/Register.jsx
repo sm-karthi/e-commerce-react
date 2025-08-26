@@ -28,7 +28,7 @@ function Register() {
             try {
                 console.log('Form Data:', values)
                 await axios.post(`${config.api}/register`, values)
-                navigation("/login")
+                navigation("/")
             } catch (error) {
                 alert("Something went wrong")
             }

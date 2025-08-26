@@ -20,18 +20,17 @@ function App() {
     <BrowserRouter>
 
       <Routes>
-        
 
-        <Route path='/' element={<User />}>
+        <Route path='/' element={<Login />} />
+        <Route path='/register' element={<Register />} />
 
-          <Route path='/' element={<UserDashboard />} />
-          <Route path='product/:id' element={<UserProductView />} />
+        <Route path='/user' element={<User />}>
+
+          <Route path='/user' element={<UserDashboard />} />
+          <Route path='/user/product/:id' element={<UserProductView />} />
 
         </Route>
 
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/register' element={<Register/>}/>
-        
 
         <Route path='/admin' element={<Admin />}>
 

@@ -8,7 +8,7 @@ function Navbar({ toggleSidebar, isUser }) {
 
     function logout(){
         window.localStorage.removeItem("myapp")
-        navigation("/login")
+        navigation("/")
     }
     return (
         <header className="border-b border-gray-300 px-3 md:px-6 py-2 md:py-4 tracking-wide relative z-40 shadow-md bg-white">

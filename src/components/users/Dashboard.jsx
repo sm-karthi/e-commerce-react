@@ -36,7 +36,7 @@ function Dashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mt-10">
 
                 {data.products.map((item) => (
-                    <Link to={`/product/${item._id}`}>
+                    <Link to={`/user/product/${item._id}`}>
 
                         <div className="bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-xl transition-shadow duration-300 p-3 cursor-pointer">
 

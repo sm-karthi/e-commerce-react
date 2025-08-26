@@ -18,7 +18,7 @@ function Login() {
                let loginRes = await axios.post(`${config.api}/login`, values);
                console.log(loginRes.data)
                window.localStorage.setItem("myapp", loginRes.data.token)
-               navigation("/")
+               navigation("/user")
             } catch (error) {
                 alert("Something went wrong")
             }
