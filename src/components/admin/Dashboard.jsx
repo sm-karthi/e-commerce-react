@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setProducts } from '../../reducers/Product-reducer';
+import { config } from '../../config';
 
 function Dashboard() {
     const dispatch = useDispatch();
@@ -9,7 +10,11 @@ function Dashboard() {
 
     let getData = async () => {
         try {
-            let response = await axios.get("https://6850f0628612b47a2c07fce0.mockapi.io/products");
+            let response = await axios.get(`${config.api}/products`, {
+                headers: {
+                    "Authorization": window.localStorage.getItem("myapp")
+                }
+            });
             dispatch(setProducts(response.data));
         } catch (error) {
             alert("Something went wrong");
@@ -17,7 +22,7 @@ function Dashboard() {
     };
 
     useEffect(() => {
-        if(data.products.length === 0){
+        if (data.products.length === 0) {
             getData();
         }
     }, []);

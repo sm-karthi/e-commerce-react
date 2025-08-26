@@ -1,7 +1,15 @@
 import React from 'react'
 import logo from '../../../src/assets/images/logo.png'
+import { useNavigate } from 'react-router-dom'
 
 function Navbar({ toggleSidebar, isUser }) {
+
+    let navigation = useNavigate()
+
+    function logout(){
+        window.localStorage.removeItem("myapp")
+        navigation("/login")
+    }
     return (
         <header className="border-b border-gray-300 px-3 md:px-6 py-2 md:py-4 tracking-wide relative z-40 shadow-md bg-white">
             <div className="flex items-center justify-between">
@@ -37,6 +45,8 @@ function Navbar({ toggleSidebar, isUser }) {
 
                 {/* Right Side Icons */}
                 <div className="flex items-center space-x-6">
+
+                    <span className='bg-red-500 text-white px-3 py-1 font-semibold rounded-md cursor-pointer' onClick={logout}>Logout</span>
 
                     {/* Heart */}
                     <span className="relative">

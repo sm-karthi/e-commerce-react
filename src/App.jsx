@@ -9,6 +9,8 @@ import ProductView from './components/admin/ProductView';
 import User from './components/users/User'
 import UserDashboard from './components/users/Dashboard';
 import UserProductView from './components/users/ProductView';
+import Login from './components/Login';
+import Register from './components/Register';
 
 
 
@@ -26,6 +28,9 @@ function App() {
           <Route path='product/:id' element={<UserProductView />} />
 
         </Route>
+
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/register' element={<Register/>}/>
         
 
         <Route path='/admin' element={<Admin />}>

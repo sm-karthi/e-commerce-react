@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setProducts } from '../../reducers/Product-reducer';
+import { config } from '../../config';
 
 function Dashboard() {
     const dispatch = useDispatch()
@@ -11,7 +12,11 @@ function Dashboard() {
 
     let getData = async () => {
         try {
-            let response = await axios.get("https://6850f0628612b47a2c07fce0.mockapi.io/products");
+            let response = await axios.get(`${config.api}/products`, {
+                headers:{
+                    "Authorization" : window.localStorage.getItem("myapp")
+                }
+            });
             dispatch(setProducts(response.data))
         } catch (error) {
             alert("Something went wrong");
@@ -31,7 +36,7 @@ function Dashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mt-10">
 
                 {data.products.map((item) => (
-                    <Link to={`/product/${item.id}`}>
+                    <Link to={`/product/${item._id}`}>
 
                         <div className="bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-xl transition-shadow duration-300 p-3 cursor-pointer">
 

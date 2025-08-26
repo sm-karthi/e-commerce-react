@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom"
 import { setProducts, deleteProducts } from "../../reducers/Product-reducer";
+import { config } from "../../config";
 
 function Products() {
 
@@ -13,7 +14,11 @@ function Products() {
     let getData = async () => {
 
         try {
-            let response = await axios.get("https://6850f0628612b47a2c07fce0.mockapi.io/products")
+            let response = await axios.get(`${config.api}/products`, {
+                headers: {
+                    "Authorization": window.localStorage.getItem("myapp")
+                }
+            })
             dispatch(setProducts(response.data))
         } catch (error) {
             alert("Something went wrong");
@@ -33,8 +38,12 @@ function Products() {
         try {
 
             if (confirm("Are you sure? Delete this product?")) {
-                await axios.delete(`https://6850f0628612b47a2c07fce0.mockapi.io/products/${id}`)
-                dispatch(deleteProducts({id}))
+                await axios.delete(`${config.api}/product/${id}`, {
+                    headers: {
+                        "Authorization": window.localStorage.getItem("myapp")
+                    }
+                })
+                dispatch(deleteProducts({ id }))
             }
 
         } catch (error) {
@@ -68,8 +77,8 @@ function Products() {
 
                     <tbody>
                         {
-                            data.products.map((item) => (
-                                <tr>
+                            data.products.map((item, index) => (
+                                <tr key={index}>
                                     <td className="tableBox w-30">{item.title}</td>
                                     <td className="tableBox w-60">{item.description}</td>
                                     <td className="tableBox w-40">
@@ -91,19 +100,19 @@ function Products() {
                                     <td className="tableBox">
                                         <div className="flex flex-wrap gap-2 items-center justify-center">
                                             <Link
-                                                to={`/admin/product/${item.id}`}
+                                                to={`/admin/product/${item._id}`}
                                                 className="bg-blue-500 text-white px-3 py-1 rounded font-semibold hover:bg-blue-700 transition duration-150 shadow-md text-sm">
                                                 View
                                             </Link>
 
                                             <Link
-                                                to={`/admin/edit/${item.id}`}
+                                                to={`/admin/edit/${item._id}`}
                                                 className="bg-green-500 text-white px-3 py-1 rounded font-semibold hover:bg-green-600 transition duration-150 shadow-md text-sm">
                                                 Edit
                                             </Link>
 
                                             <button
-                                                onClick={() => deleteProduct(item.id)}
+                                                onClick={() => deleteProduct(item._id)}
                                                 className="bg-red-500 text-white px-3 py-1 rounded font-semibold hover:bg-red-700 transition duration-150 shadow-md text-sm cursor-pointer">
                                                 Delete
                                             </button>

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { config } from '../../config';
 
 function ProductView() {
   let { id } = useParams();
@@ -9,7 +10,11 @@ function ProductView() {
 
   let getProduct = async () => {
     try {
-      let response = await axios.get(`https://6850f0628612b47a2c07fce0.mockapi.io/products/${id}`);
+      let response = await axios.get(`${config.api}/product/${id}`, {
+        headers: {
+          "Authorization": window.localStorage.getItem("myapp")
+        }
+      });
       setProduct(response.data);
     } catch (error) {
       alert("Something went wrong");

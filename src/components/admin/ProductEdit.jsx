@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { editProduct } from '../../reducers/Product-reducer';
+import { config } from '../../config';
 
 function ProductEdit() {
 
@@ -17,10 +18,15 @@ function ProductEdit() {
 
     try {
 
-      let response = await axios.get(`https://6850f0628612b47a2c07fce0.mockapi.io/products/${id}`)
+      let response = await axios.get(`${config.api}/product/${id}`, {
+        headers: {
+          "Authorization": window.localStorage.getItem("myapp")
+        }
+      })
       formik.setValues(response.data);
 
     } catch (error) {
+      console.log(error)
       alert("Something went wrong")
     }
   }
@@ -37,8 +43,8 @@ function ProductEdit() {
       details: [
         {
           key: "",
-          value: "",
-          quantity: ""
+          value: 0,
+          quantity: 0
         }
       ]
     },
@@ -87,7 +93,11 @@ function ProductEdit() {
 
       try {
 
-        await axios.put(`https://6850f0628612b47a2c07fce0.mockapi.io/products/${id}`, values)
+        await axios.put(`${config.api}/product/${id}`, values, {
+          headers: {
+            "Authorization": window.localStorage.getItem("myapp")
+          }
+        })
         dispatch(editProduct({ id, values }))
         navigate("/admin/products")
         console.log(values);
@@ -101,7 +111,7 @@ function ProductEdit() {
   let rows = formik.values.details;
 
   let handleAddBtn = () => {
-    formik.setFieldValue("details", [...rows, { key: "", value: "", quantity: "" }]);
+    formik.setFieldValue("details", [...rows, { key: "", value: 0, quantity: 0 }]);
   };
 
   let handleCloseBtn = (index) => {
@@ -200,7 +210,7 @@ function ProductEdit() {
 
           {rows.map((row, index) => (
 
-            <div className='flex relative flex-col flex-wrap md:flex-row space-y-3 md:space-y-0 justify-between'>
+            <div key={index} className='flex relative flex-col flex-wrap md:flex-row space-y-3 md:space-y-0 justify-between'>
 
               <div className='flex flex-col'>
 

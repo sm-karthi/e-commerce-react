@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addProduct } from '../../reducers/Product-reducer';
+import { config } from '../../config';
 
 function ProductCreate() {
 
@@ -67,7 +68,7 @@ function ProductCreate() {
 
       try {
 
-        await axios.post("https://6850f0628612b47a2c07fce0.mockapi.io/products", values)
+        await axios.post(`${config.api}/product`, values)
         dispatch(addProduct(values))
         navigate("/admin/products")
         console.log(values);
